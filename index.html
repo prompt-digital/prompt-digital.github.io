@@ -1,41 +1,424 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>あなたのＨＰタイトル</title>
-<meta name="keywords" content="ページのキーワードA,B,C">
-<meta name="description" content="ページの説明">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITシステム総合支援サービス</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;       /* 深みのある信頼のブルー */
+            --secondary: #3b82f6;     /* 穏やかなサイバーブルー */
+            --dark-bg: #0f172a;       /* サイバーパンク感を演出する落ち着いたダークグレー */
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-main);
+            line-height: 1.7;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* ヘッダー */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.05em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* ヒーローセクション（サイバーパンク × 落ち着いた仕事風景） */
+        #top {
+            position: relative;
+            padding: 180px 24px 140px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            /* 背景にネオンブルーの集中するエンジニアのフリー素材を設定 */
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
+                        url('https://unsplash.com') no-repeat center center/cover;
+            color: #ffffff;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            color: #3b82f6; /* サイバー感のある明るいブルー */
+            line-height: 1.4;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            max-width: 700px;
+        }
+
+        /* 共通セクション */
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+
+        /* 強みセクション */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+            border: 1px solid #e2e8f0;
+            /* 上下動のアニメーションやホバー時の動きを撤廃 */
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--secondary);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        /* サービス紹介（2カラム構成：写真＋説明） */
+        #services-section {
+            background-color: #f1f5f9;
+            max-width: 100%;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-row {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 60px;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        /* 偶数番目の行は左右反転してリズムを出す */
+        .service-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .service-img {
+            flex: 1;
+            min-height: 350px;
+            /* サイバーパンク調の落ち着いた開発現場イメージ（Unsplash） */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* それぞれ異なるサイバーパンク×落ち着いた作業のフリー素材を指定 */
+        .img-1 { background-image: url('https://unsplash.com'); }
+        .img-2 { background-image: url('https://unsplash.com'); }
+        .img-3 { background-image: url('https://unsplash.com'); }
+
+        .service-info {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .service-info h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        .service-info p {
+            color: var(--text-sub);
+            font-size: 1rem;
+        }
+
+        /* 会社概要 */
+        .company-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .company-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .company-table tr:last-child th,
+        .company-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .company-table th, .company-table td {
+            padding: 24px;
+            border-bottom: 1px solid #edf2f7;
+            text-align: left;
+        }
+
+        .company-table th {
+            width: 25%;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* フッター */
+        footer {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 24px;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 968px) {
+            .service-row, .service-row:nth-child(even) {
+                flex-direction: column;
+            }
+            .service-img {
+                width: 100%;
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            nav ul {
+                gap: 15px;
+            }
+            .hero-text h1 {
+                font-size: 1.9rem;
+            }
+            section {
+                padding: 70px 24px;
+            }
+            .company-table th, .company-table td {
+                display: block;
+                width: 100%;
+                padding: 12px 0;
+            }
+            .company-table th {
+                border-bottom: none;
+                padding-top: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="outer">
-<header><div id="header-container"><div id="head-inner"><h1>あなたのＨＰタイトル</h1>
-<p class="description">あなたのＨＰの説明文</p></div></div>
-</header>
-<div id="content-wrapper">
-<main>
-<div id="inner">
-<h2>記事ページ見出し・大</h2>
-<p>文章あれこれ</p>
-<h3>記事ページ見出し・中</h3>
-<p>文章あれこれ</p>
-<h4>記事ページ見出し・小</h4>
-<p>文章あれこれ</p>
-</div>
-</main>
-<aside>
-<div id="middle-inner">
-<div class="side-title">menu</div>
-<div class="side">
-<ul>
-<li>記事ページへのリンク</li>
-<li>記事ページへのリンク</li>
-</ul>
-</div>
-</div>
-</aside>
-</div>
-<footer>© 2010 あなたのホームページ</footer>
-</div></body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="header-container">
+            <div class="logo">オフィス名 / 会社名</div>
+            <nav>
+                <ul>
+                    <li><a href="#top">トップ</a></li>
+                    <li><a href="#features">強み</a></li>
+                    <li><a href="#services-section">サービス</a></li>
+                    <li><a href="#about">会社概要</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- トップ -->
+    <section id="top">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>Javaを主軸とした確かな技術力。<br>設計から保守まで柔軟に伴走する。</h1>
+                <p>大規模開発で磨いたJavaの知見をベースに、インフラからフロント、バックエンドまで一気通貫サポート。多種多様なITニーズに柔軟に応え、お客様のビジネスを穏やかに、確実に前へ進めます。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 強み -->
+    <section id="features">
+        <h2 class="section-title">私たちの強み</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M16.26 16.26l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>
+                </div>
+                <h3>Javaベースの強固な開発力</h3>
+                <p>エンタープライズ領域で信頼性の高いJavaを中心に、堅牢でセキュリティに優れた、長く安定して動くシステムを構築します。</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>フルスタックな柔軟性</h3>
+                <p>サーバー側のロジック（バックエンド）から、ユーザーの目に触れる画面（フロントエンド）まで、境界を作らずシームレスに開発可能です。</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>B2B・B2Cを問わない知見</h3>
+                <p>社内向けの業務効率化システムから、一般の顧客向けのWebサービスまで、双方のビジネスモデルに最適な提案・実装を行います。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- サービス紹介 -->
+    <section id="services-section">
+        <div class="services-container">
+            <h2 class="section-title">サービス内容</h2>
+            
+            <!-- サービス1 -->
+            <div class="service-row">
+                <div class="service-img img-1"></div>
+                <div class="service-info">
+                    <h3>ITシステム設計・構築支援</h3>
+                    <p>要件定義から設計・開発まで、Javaの特性を最大限に活かした拡張性の高いシステムを構築。新規開発だけでなく、古くなったシステムのモダンなリプレイスまでマルチに対応可能です。</p>
+                </div>
+            </div>
+
+            <!-- サービス2 -->
+            <div class="service-row">
+                <div class="service-img img-2"></div>
+                <div class="service-info">
+                    <h3>性能改善・不具合対応</h3>
+                    <p>「システムが重い」「エラーが多発する」といった複雑な現場のトラブルを、コードレベルで徹底分析。インフラからバックエンドまでボトルネックを解消し、再び安定した稼働を取り戻します。</p>
+                </div>
+            </div>
+
+            <!-- サービス3 -->
+            <div class="service-row">
+                <div class="service-img img-3"></div>
+                <div class="service-info">
+                    <h3>マルチITサポート</h3>
+                    <p>特定の技術に固執せず、インフラの最適化からフロントエンドの改修まで幅広くカバー。お客様のニーズに対して「何でも柔軟に相談できる」身軽で広範囲な技術支援を提供します。</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 会社概要 -->
+    <section id="about">
+        <h2 class="section-title">会社概要</h2>
+        <div class="company-card">
+            <table class="company-table">
+                <tr>
+                    <th>屋号 / 会社名</th>
+                    <td>〇〇システムソリューションズ（※変更してください）</td>
+                </tr>
+                <tr>
+                    <th>代表者</th>
+                    <td>〇〇 〇〇</td>
+                </tr>
+                <tr>
+                    <th>事業内容</th>
+                    <td>
+                        ・JavaをメインとしたITシステム設計・構築・運営支援<br>
+                        ・システムの性能改善、不具合対応などの保守業務<br>
+                        ・フロントエンド・バックエンドの総合開発支援
+                    </td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒000-0000 東京都〇〇区〇〇 1-2-3（※変更してください）</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 オフィス名 / 会社名. All Rights Reserved.</p>
+    </footer>
+
+</body>
 </html>
